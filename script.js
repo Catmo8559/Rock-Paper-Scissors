@@ -13,8 +13,7 @@ var abilities = ['Really fucking annoying','Ignorant', 'Acoustic','Asthmatic','G
 
 var score = 100;
 */
-
-var score = 1000;
+var score = 100;
 updateScore(0);
 var yunDoo = 0;
 
@@ -63,6 +62,7 @@ function logIt(message){
     var content = document.createTextNode(message);
     div.appendChild(content);
     div.appendChild(document.createElement('br'));
+    div.scrollTo(0, div.scrollHeight);
 }
 
 function newLine(){
@@ -92,21 +92,6 @@ function generateOdds(){
     pProb = Math.floor(Math.random()*(100-rProb));
     sProb = 100-rProb-pProb;
 }
-
-/*function getRandom(){
-    var num = Math.random(),
-        s = 0,
-        lastIndex = weights.length - 1;
-        
-    for(var i = 0; i<lastIndex; i++){
-        s+= weights[i];
-        if(num<s){
-            return results[i];
-        }
-    }
-    
-    return results[lastIndex];
-}*/
 
 function getRandom(spec){
     var i, sum=0, r=Math.random();
@@ -199,13 +184,30 @@ function getWin(int, bot){
         logIt("It's a draw!");
         logIt("What will you throw?");
     }
-    if((int==0 && bot==1)||(int==1 && bot==2)||(int==2 && bot==0)){
-        logIt("You lost! Your score dropped!");
-        x = -100;
+
+    if(int==0 && bot==1){
+        logIt("You lost! Your score dropped by " + (100-pProb) + "!");
+        x = -(100-pProb);
     }
-    if((int==0 && bot==2)||(int==1 && bot==0)||(int==2 && bot==1)){
-        logIt("You won! Your score increased!");
-        x = 100;
+    if(int==1 && bot==2){
+        logIt("You lost! Your score dropped by " + (100-sProb) + "!");
+        x = -(100-sProb);
+    }
+    if(int==2 && bot==0){
+        logIt("You lost! Your score dropped by " + (100-rProb) + "!");
+        x = -(100-rProb);
+    }
+
+    if((int==0 && bot==2)){
+        logIt("You won! Your score increased by " + (100-sProb) + "!");
+        x = 100-sProb;
+    }
+    if(((int==1 && bot==0))){
+        logIt("You won! Your score increased by " + (100-rProb) + "!");
+        x = 100-rProb;
+    } if((int==2 && bot==1)){
+        logIt("You won! Your score increased by " + (100-pProb) + "!");
+        x = 100-pProb;
     }
     updateScore(x);
 }
